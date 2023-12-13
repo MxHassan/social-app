@@ -1,0 +1,6 @@
+.MuiBox-root::-webkit-scrollbar {
+  width: 5px;
+}
+.MuiBox-root::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+}
