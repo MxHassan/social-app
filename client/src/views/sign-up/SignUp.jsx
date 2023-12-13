@@ -1,8 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -21,10 +20,49 @@ const SignButton = styled(Button)(({ theme }) => ({
   padding: "6px 12px",
   fontWeight: 700,
 }));
+const formInputs = [
+  {
+    id: "username",
+    name: "username",
+    type: "text",
+    label: "Username",
+    autoFocus: true,
+    autoComplete: "username",
+    errormessage:
+      "Username should be 3-16 characters , includes at least 1 number and without any special characters !",
+  },
+  {
+    id: "email",
+    name: "email",
+    type: "email",
+    label: "Email Address",
+    autoComplete: "email",
+    errormessage: "It should be a valid email address !",
+  },
+  {
+    id: "password",
+    name: "password",
+    type: "password",
+    label: "Password",
+    autoComplete: "new-password",
+    errormessage:
+      "Password should be 8-20 characters and include at least 1 uppercase letter , 1 number and 1 special character !",
+  },
+  {
+    id: "confirmPassword",
+    name: "confirmPassword",
+    type: "password",
+    label: "Confirm Password",
+    autoComplete: "new-password",
+    errormessage:
+      "Password should be 8-20 characters and include at least 1 uppercase letter , 1 number and 1 special character !",
+  },
+];
 
 export default function SignUp() {
   const theme = useTheme();
   const navigate = useNavigate();
+  // form validation process
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -51,6 +89,7 @@ export default function SignUp() {
     updateError(e.target.name, result);
   };
 
+  // form submition
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -79,44 +118,7 @@ export default function SignUp() {
       }
     }
   };
-  const inputs = [
-    {
-      id: "username",
-      name: "username",
-      type: "text",
-      label: "Username",
-      autoFocus: true,
-      autoComplete: "username",
-      errormessage:
-        "Username should be 3-16 characters , includes at least 1 number and without any special characters !",
-    },
-    {
-      id: "email",
-      name: "email",
-      type: "email",
-      label: "Email Address",
-      autoComplete: "email",
-      errormessage: "It should be a valid email address !",
-    },
-    {
-      id: "password",
-      name: "password",
-      type: "password",
-      label: "Password",
-      autoComplete: "new-password",
-      errormessage:
-        "Password should be 8-20 characters and include at least 1 uppercase letter , 1 number and 1 special character !",
-    },
-    {
-      id: "confirmPassword",
-      name: "confirmPassword",
-      type: "password",
-      label: "Confirm Password",
-      autoComplete: "new-password",
-      errormessage:
-        "Password should be 8-20 characters and include at least 1 uppercase letter , 1 number and 1 special character !",
-    },
-  ];
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -145,7 +147,7 @@ export default function SignUp() {
         </Box>
         <Box component="form" onSubmit={handleSubmit} noValidate>
           <Grid container spacing={2}>
-            {inputs.map((input) => (
+            {formInputs.map((input) => (
               <Grid key={input.id} item xs={12}>
                 <TextField
                   value={values[input.name]}
@@ -163,18 +165,6 @@ export default function SignUp() {
                 Passwords Don't match
               </FormHelperText>
             )}
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="allowExtraEmails"
-                    value={true}
-                    color="primary"
-                  />
-                }
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
           </Grid>
           <Button
             type="submit"

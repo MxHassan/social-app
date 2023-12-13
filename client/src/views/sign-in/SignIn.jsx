@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -25,32 +25,8 @@ export const SignButton = styled(Button)(({ theme }) => ({
 export default function SignIn() {
   const navigate = useNavigate();
   const { isFetching, error, dispatch } = useContext(AuthContext);
-
-  // const [errors, setErrors] = useState({
-  //   email: false,
-  //   password: false,
-  // });
-  // const [values, setValues] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-  // const updateError = (propName, newValue) => {
-  //   setErrors({
-  //     ...errors,
-  //     [propName]: newValue,
-  //   });
-  // };
-  // const handleChange = (e) => {
-  //   setValues({
-  //     ...values,
-  //     [e.target.name]: e.target.value,
-  //   });
-  //   updateError(e.target.name, !ValidiateProps(e.target.name, e.target.value));
-  // };
-
   const theme = useTheme();
-  // const emailRef = useRef();
-  // const passwordRef = useRef();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await new FormData(e.currentTarget);
@@ -60,19 +36,8 @@ export default function SignIn() {
     };
     dispatch({ type: "LOGIN_START" });
     try {
-      const resToken = await axios.post("/auth/login", userCredentials);
-      // console.log(resToken.data);
-      const { username, accessToken } = resToken.data;
-      // const headers = {
-      //   authorization: `Bearer ${accessToken}`,
-      //   // "Content-Type": "application/json",
-      // };
-      // const verifyToken = await axios.post(`/auth/verify/${username}`, {
-      //   headers,
-      // });
-      // console.log("this is verify data", verifyToken.data);
-      const resUser = await axios.get(`/users?username=${username}`);
-      dispatch({ type: "LOGIN_SUCCESS", payload: resUser.data });
+      const res = await axios.post("/auth/login", userCredentials);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE" });
     }
@@ -114,7 +79,6 @@ export default function SignIn() {
             name="username"
             type="text"
             autoComplete="username"
-            // inputRef={emailRef}
             error={error}
             helperText={error && "Invalid username"}
             autoFocus
@@ -127,12 +91,10 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            // inputRef={passwordRef}
             error={error}
             helperText={error && "Invalid password"}
             autoComplete="current-password"
           />
-          {/* <Box> */}
           <FormControlLabel
             control={
               <Checkbox name="remember" value="remember" color="primary" />
@@ -149,7 +111,6 @@ export default function SignIn() {
           >
             Forget password ?
           </Link>
-          {/* </Box> */}
           <Button
             disabled={isFetching}
             type="submit"
@@ -173,11 +134,7 @@ export default function SignIn() {
           variant="contained"
           fullWidth
         >
-          {isFetching ? (
-            <CircularProgress size="39px" />
-          ) : (
-            "Create a new account"
-          )}
+          Create a new account
         </SignButton>
       </Box>
     </ThemeProvider>
