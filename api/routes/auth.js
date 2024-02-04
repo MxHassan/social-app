@@ -2,7 +2,32 @@ const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+
+// const verifyJWT = (req, res, next) => {
+//   const authHeader = req.headers["authorization"];
+//   if (!authHeader) return res.status(401).json("Unauthoriazed from verify");
+//   console.log(authHeader); // Bearer token
+//   const token = authHeader.split(" ")[1];
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+//     if (err) return res.status(403).json("Token is invalid");
+//     req.user = decoded.username;
+//     next();
+//   });
+// };
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    { username: user.username },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "30s" } // 10min in production
+  );
+};
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    { username: user.username },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "1d" }
+  );
+};
 
 // register users
 router.post("/register", async (req, res) => {
@@ -35,18 +60,31 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = await User.findOne({ username: username });
-    if (!user) return res.status(404).json("user not found");
-    const validPassword = await bcrypt.compare(password, user.password);
+    const foundUser = await User.findOne({ username: username });
+    if (!foundUser) return res.status(404).json("user not found");
+    const validPassword = await bcrypt.compare(password, foundUser.password);
     if (!validPassword) {
       return res.status(400).json("wrong password");
     }
-    res.status(200).json(user);
+    // create jwt
+    const accessToken = generateAccessToken(foundUser);
+    const refreshToken = generateRefreshToken(foundUser);
+    const updatedUser = await User.findByIdAndUpdate(
+      foundUser._id,
+      { refreshToken: refreshToken },
+      { new: true }
+    );
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    }); // 1day
+    res.status(200).json({ accessToken, foundUser });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 module.exports = router;
+// module.exports = { verifyJWT };
 
 // // jwt with lama dev
 

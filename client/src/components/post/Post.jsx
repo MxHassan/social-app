@@ -24,13 +24,15 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { format } from "timeago.js";
 import { AuthContext } from "../../context/auth/AuthContext";
+import { BASE_URL } from "../../constants";
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
+
 const Post = ({ post }) => {
   // const navigate = useNavigate();
   // const location = useLocation();
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user: currentUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -39,7 +41,9 @@ const Post = ({ post }) => {
 
   const handleLike = () => {
     try {
-      axios.put(`/posts/${post._id}/like`, { userId: currentUser._id });
+      axios.put(`${BASE_URL}/posts/${post._id}/like`, {
+        userId: currentUser._id,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +57,7 @@ const Post = ({ post }) => {
     console.log("this is front reqBody", reqBody);
     try {
       axios.delete(
-        `/posts/${post._id}/delete`,
+        `${BASE_URL}/posts/${post._id}/delete`,
         { headers: { "Content-Type": "application/json" } },
         { userId: currentUser._id }
       );
@@ -63,7 +67,7 @@ const Post = ({ post }) => {
   };
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axios.get(`${BASE_URL}/users?userId=${post.userId}`);
       setUser(res.data);
     };
     fetchUser();

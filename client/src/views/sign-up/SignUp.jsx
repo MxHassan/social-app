@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ValidiateProps } from "../../utils/validation";
 import axios from "axios";
+import { BASE_URL } from "../../constants";
 
 const SignButton = styled(Button)(({ theme }) => ({
   fontSize: "22px",
@@ -108,7 +109,7 @@ export default function SignUp() {
         setMatchError(false);
         console.log(userCredentials);
         try {
-          await axios.post("/auth/register", userCredentials);
+          await axios.post(`${BASE_URL}/auth/register`, userCredentials);
           navigate("/signin");
         } catch (err) {
           console.log(err);

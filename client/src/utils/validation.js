@@ -1,16 +1,12 @@
-const validUsernameRe = new RegExp(
-  "^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{3,16}$"
-);
 const validPasswordRe = new RegExp(
-  "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$"
+  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$"
 );
 const validEmailRe = new RegExp(
-  "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
+  "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$"
 );
+
 export const ValidiateProps = (propName, propValue) => {
   switch (propName) {
-    case "username":
-      return validUsernameRe.test(propValue);
     case "password":
       return validPasswordRe.test(propValue);
     case "email":

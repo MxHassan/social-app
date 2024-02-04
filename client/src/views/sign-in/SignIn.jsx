@@ -13,6 +13,7 @@ import { Link, styled, useTheme, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth/AuthContext";
 import axios from "axios";
+import { BASE_URL } from "../../constants";
 
 export const SignButton = styled(Button)(({ theme }) => ({
   fontSize: "22px",
@@ -36,8 +37,8 @@ export default function SignIn() {
     };
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/login", userCredentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+      const res = await axios.post(`${BASE_URL}/auth/login`, userCredentials);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.foundUser });
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE" });
     }

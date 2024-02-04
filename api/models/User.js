@@ -60,6 +60,9 @@ const Userschema = new mongoose.Schema(
       type: Number,
       enum: [1, 2, 3],
     },
+    refreshToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

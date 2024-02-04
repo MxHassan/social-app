@@ -18,4 +18,4 @@ export const Unfollow = (userId) => ({
 });
 export const Logout = () => ({
   type: "LOGOUT",
-});
+}); 

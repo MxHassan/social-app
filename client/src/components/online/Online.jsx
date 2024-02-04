@@ -1,4 +1,5 @@
 import "./online.css";
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import { Avatar, List, ListItemButton, ListItemText } from "@mui/material";
@@ -32,7 +33,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
   },
 }));
-const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
 export default function Online({ user, sidebar }) {
   return (

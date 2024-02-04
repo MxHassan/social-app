@@ -14,7 +14,8 @@ import StyledButton from "../custombutton/CustomButton";
 import { AuthContext } from "../../context/auth/AuthContext";
 import axios from "axios";
 
-const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
+import { BASE_URL } from "../../constants";
 
 function ShareArea({ sx }) {
   const { user } = useContext(AuthContext);
@@ -33,7 +34,7 @@ function ShareArea({ sx }) {
       data.append("file", file);
       newPost.img = fileName;
       try {
-        await axios.post("/upload", data);
+        await axios.post(`${BASE_URL}/upload`, data);
       } catch (err) {
         console.log(err);
       }

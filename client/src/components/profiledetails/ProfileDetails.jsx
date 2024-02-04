@@ -9,20 +9,20 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/auth/AuthContext";
-// import { drawerWidth } from "../layout/MainLayout";
+import { BASE_URL } from "../../constants";
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
 
 const ProfileDetails = () => {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { username } = useParams();
-  // const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useContext(AuthContext);
 
   const [user, setUser] = useState({});
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`);
+      const res = await axios.get(`${BASE_URL}/users?username=${username}`);
       setUser(res.data);
     };
-    fetchUser();
+    username === currentUser.username ? setUser(currentUser) : fetchUser();
   }, [username]);
 
   const theme = createTheme();

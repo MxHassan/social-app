@@ -19,7 +19,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/auth/AuthContext";
 
 // project imports
-const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../../constants";
 
 function UserMenu() {
   const { user, dispatch } = useContext(AuthContext);

@@ -4,6 +4,7 @@ import { styled, useTheme } from "@mui/material/styles";
 // project imports
 import "./rightbar.css";
 import CustomToolbar from "../customtoolbar/CustomToolbar";
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
 
 import Online from "../online/Online";
 import { Users } from "../../dummyData";
@@ -13,13 +14,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth/AuthContext";
 import { Add, Remove } from "@mui/icons-material";
+import { BASE_URL } from "../../constants";
 
 const ResponsiveRightbar = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     display: "none",
   },
 }));
-const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 export function RightbarProfile({ user }) {
   const { user: currentuser, dispatch } = useContext(AuthContext);
   const [followings, setFollowings] = useState([]);
@@ -31,7 +32,9 @@ export function RightbarProfile({ user }) {
     const timeout = setTimeout(() => {
       const getFollowings = async () => {
         try {
-          const res = await axios.get("/users/followings/" + user._id);
+          const res = await axios.get(
+            `${BASE_URL}/users/followings/` + user._id
+          );
           setFollowings(res.data);
         } catch (error) {
           console.log(error);
@@ -45,12 +48,12 @@ export function RightbarProfile({ user }) {
   const handleFollow = async (e) => {
     try {
       if (isFollowed) {
-        await axios.put(`/users/${user._id}/unfollow`, {
+        await axios.put(`${BASE_URL}/users/${user._id}/unfollow`, {
           userId: currentuser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put(`/users/${user._id}/follow`, {
+        await axios.put(`${BASE_URL}/users/${user._id}/follow`, {
           userId: currentuser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });

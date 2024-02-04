@@ -1,13 +1,10 @@
 import { useRouteError, useNavigate } from "react-router-dom";
-import React from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Box, Button, Container, Typography, Grid } from "@mui/material";
 import "./errorpage.css";
 
+import { REACT_APP_PUBLIC_FOLDER as PF } from "../../constants";
 export default function ErrorPage() {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const navigate = useNavigate();
-
   const error = useRouteError();
   console.error(error);
   return (

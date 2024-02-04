@@ -9,6 +9,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/auth/AuthContext";
 import ShareArea from "../share/ShareArea";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../../constants";
 const StyledFeed = styled(Box)(({ theme }) => ({
   maxWidth: "680px",
 }));
@@ -19,24 +20,27 @@ function Feed({ sx }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    // setTimeout(() => {
     const fetchPosts = async () => {
       const res = username
-        ? await axios.get("/posts/profile/" + username)
-        : await axios.get("posts/timeline/" + user._id);
+        ? await axios.get(`${BASE_URL}/posts/profile/` + username)
+        : await axios.get(`${BASE_URL}/posts/timeline/` + user._id);
+      console.log(user);
       setPosts(
-        res.data.sort((p1, p2) => {
+        res?.data?.sort((p1, p2) => {
           return new Date(p2.createdAt) - new Date(p1.createdAt);
         })
       );
     };
     fetchPosts();
+    // }, 1000);
   }, [username, user._id]);
   const theme = useTheme();
   return (
     <ThemeProvider theme={theme}>
       <StyledFeed sx={sx}>
         {(!username || username === user.username) && <ShareArea />}
-        {posts.map((post) => (
+        {posts?.map((post) => (
           <Post key={post._id} post={post} />
         ))}
       </StyledFeed>

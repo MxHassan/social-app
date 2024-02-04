@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+// const { verifyJWT } = require("./auth");
 
 //update user
 router.put("/:userId", async (req, res) => {
